@@ -20,14 +20,14 @@ public struct TypeFamilyParentMacro: MemberMacro, ExtensionMacro {
         let caseBundles = try caseBundles(for: declaration)
         
         return [
-            "typealias TypeParent = Self",
+            "public typealias TypeParent = Self",
         ]
         +
         caseBundles.map { "case \($0.name)(\($0.type))" }
         +
         [
             """
-            func typeChild() -> any Self.TypeChild {
+            public var childValue: any Self.TypeChild {
                 switch self {
                 \(raw: caseBundles
                     .map { "case .\($0.name)(let child): return child" }

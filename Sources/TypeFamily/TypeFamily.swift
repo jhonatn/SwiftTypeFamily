@@ -2,7 +2,7 @@ import Foundation
 
 public protocol TypeFamilyParent {
     associatedtype TypeChild//: TypeFamilyChild
-    func typeChild() -> Self.TypeChild
+    var childValue: Self.TypeChild { get }
 }
 
 public protocol TypeFamilyChild {
@@ -12,7 +12,7 @@ public protocol TypeFamilyChild {
 
 public extension TypeFamilyParent {
     func casted<T>(`as` castingType: T.Type = T.self) -> T? {
-        typeChild() as? T
+        childValue as? T
     }
 }
 
