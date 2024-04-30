@@ -34,7 +34,7 @@ for presentation in presentations {
     print("Members in main scenario: \(presentation.childValue.memberCount)")
     switch presentation {
     case .orchestra(let value):
-        print("Everyone besides \(value.director) will enter the stage in advance")
+        print("All members besides \(value.director) will need to enter the stage in advance")
     case .popArtist(let value):
         print("\(value.vocalist) will need help entering stage right before starting the show")
     }
