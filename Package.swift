@@ -29,15 +29,29 @@ let package = Package(
             name: "TypeFamilyMacros",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+                "TypeFamilyCore",
             ]
         ),
 
         // Library that exposes a macro as part of its API, which is used in client programs.
-        .target(name: "TypeFamily", dependencies: ["TypeFamilyMacros"]),
+        .target(
+            name: "TypeFamily",
+            dependencies: [
+                "TypeFamilyMacros",
+                "TypeFamilyCore",
+            ]
+        ),
+        .target(
+            name: "TypeFamilyCore",
+            dependencies: []
+        ),
 
         // A client of the library, which is able to use the macro in its own code.
-        .executableTarget(name: "TypeFamilyClient", dependencies: ["TypeFamily"]),
+        .executableTarget(
+            name: "TypeFamilyClient",
+            dependencies: ["TypeFamily"]
+        ),
 
         // A test target used to develop the macro implementation.
         .testTarget(

@@ -1,20 +1,8 @@
 import Foundation
+import TypeFamilyCore
 
-public protocol TypeFamilyParent {
-    associatedtype TypeChild//: TypeFamilyChild
-    var childValue: Self.TypeChild { get }
-}
-
-public protocol TypeFamilyChild {
-    associatedtype TypeParent: TypeFamilyParent
-    func wrappedIntoParent() -> TypeParent
-}
-
-public extension TypeFamilyParent {
-    func casted<T>(`as` castingType: T.Type = T.self) -> T? {
-        childValue as? T
-    }
-}
+public typealias TypeFamilyParent = TypeFamilyCore.TypeFamilyParent
+public typealias TypeFamilyChild = TypeFamilyCore.TypeFamilyChild
 
 @attached(extension, names: arbitrary, conformances: TypeFamilyParent)
 @attached(member, names: arbitrary)
