@@ -3,10 +3,11 @@ import TypeFamilyCore
 
 public typealias TypeFamilyParent = TypeFamilyCore.TypeFamilyParent
 public typealias TypeFamilyChild = TypeFamilyCore.TypeFamilyChild
+public typealias TypeFamilyParentOptions = TypeFamilyCore.TypeFamilyParentOptions
 
 @attached(extension, names: arbitrary, conformances: TypeFamilyParent)
 @attached(member, names: arbitrary)
-public macro TypeFamily() = #externalMacro(
+public macro TypeFamily(_: TypeFamilyParentOptions...) = #externalMacro(
     module: "TypeFamilyMacros",
     type: "TypeFamilyParentMacro"
 )
