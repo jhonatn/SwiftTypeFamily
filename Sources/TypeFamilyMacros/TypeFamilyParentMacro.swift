@@ -10,6 +10,7 @@ import Foundation
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
+import TypeFamilyCore
 
 public struct TypeFamilyParentMacro: MemberMacro, ExtensionMacro {
     public static func expansion(
@@ -18,6 +19,16 @@ public struct TypeFamilyParentMacro: MemberMacro, ExtensionMacro {
       in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
         let caseBundles = try caseBundles(for: declaration)
+        let options: Set<TypeFamilyParentOptions> = {
+            let arguments = node.arguments?.as(LabeledExprListSyntax.self).map(Array<LabeledExprSyntax>.init)
+            guard let arguments else {
+                return .init()
+            }
+            let result = arguments
+                .compactMap { $0.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text }
+                .compactMap(TypeFamilyParentOptions.init(rawValue:))
+            return Set(result)
+        }()
         
         return [
             "public typealias TypeParent = Self",
@@ -37,6 +48,14 @@ public struct TypeFamilyParentMacro: MemberMacro, ExtensionMacro {
             }
             """,
         ]
+        +
+        [
+            !options.contains(.keyPathed) ? nil : """
+            public subscript<T>(dynamicMember keyPath: KeyPath<any Self.TypeChild, T>) -> T {
+                childValue[keyPath: keyPath]
+            }
+            """
+        ].compactMap{$0}
     }
     
     public static func expansion(
