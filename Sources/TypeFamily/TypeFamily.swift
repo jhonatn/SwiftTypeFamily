@@ -13,7 +13,7 @@ public macro TypeFamily(_: TypeFamilyParentOptions...) = #externalMacro(
 )
 
 @attached(extension, names: arbitrary, conformances: TypeFamilyChild)
-@attached(member, names: named(wrappedIntoParent))
+@attached(member)
 public macro TypeFamilyChild(
     _ method: String
 ) = #externalMacro(
@@ -22,7 +22,7 @@ public macro TypeFamilyChild(
 )
 
 @attached(extension, names: arbitrary, conformances: TypeFamilyChild)
-@attached(member, names: named(wrappedIntoParent))
+@attached(member)
 public macro TypeFamilyChild(
 ) = #externalMacro(
     module: "TypeFamilyMacros",

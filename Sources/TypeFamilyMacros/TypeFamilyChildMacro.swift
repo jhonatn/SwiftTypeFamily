@@ -47,7 +47,6 @@ public struct TypeFamilyChildMacro: MemberMacro, ExtensionMacro {
                 return TokenSyntax.identifier(defaultEnumName)
             }()
         return [
-            "func wrappedIntoParent() -> TypeParent { .\(methodArgument)(self) }",
         ]
     }
 }

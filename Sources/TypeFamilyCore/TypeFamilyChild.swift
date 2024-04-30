@@ -8,6 +8,4 @@
 import Foundation
 
 public protocol TypeFamilyChild {
-    associatedtype TypeParent: TypeFamilyParent
-    func wrappedIntoParent() -> TypeParent
 }

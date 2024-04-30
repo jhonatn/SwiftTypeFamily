@@ -47,7 +47,25 @@ public struct TypeFamilyParentMacro: MemberMacro, ExtensionMacro {
                 }
             }
             """,
+            """
+            public static func wrapping(_ child: any Self.TypeChild) -> Self? {
+                switch child {
+                \(raw: caseBundles.map {
+                "case is \($0.type): .\($0.name)(child as! \($0.type))"
+                }.joined(separator: "\n"))
+                default: nil
+                }
+            }
+            """,
         ]
+        +
+        caseBundles.map {
+            """
+            public static func wrapping(_ child: \($0.type)) -> Self {
+                .\($0.name)(child)
+            }
+            """
+        }
         +
         [
             !options.contains(.keyPathed) ? nil : """
