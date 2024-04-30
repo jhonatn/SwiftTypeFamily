@@ -18,7 +18,7 @@ protocol ArtistGroup: TypeFamilyChild {
     var memberCount: Int { get }
 }
 
-@TypeFamily
+@TypeFamily(.keyPathed) @dynamicMemberLookup
 enum MusicGroup {
     typealias TypeChild = ArtistGroup
     
@@ -45,12 +45,13 @@ let presentations: [MusicGroup] = [
 ]
 
 for presentation in presentations {
-    print("Members in main scenario: \(presentation.typeChild().memberCount)")
-}
-
-let popArtists: [MusicGroup.PopProducingTeam] = presentations.compactMap { $0.casted() }
-for popArtist in popArtists {
-    print("\(popArtist.vocalist) will need help entering stage")
+    print("Members in main scenario: \(presentation.memberCount)")
+    switch presentation {
+    case .orchestra(let value):
+        print("All members besides \(value.director) will need to enter the stage in advance")
+    case .popArtist(let value):
+        print("\(value.vocalist) will need help entering stage right before starting the show")
+    }
 }
 ```
 
